@@ -47,3 +47,42 @@ volumes:
       - ./frontend-react-js:/frontend-react-js`
 ```
 The above code mounts the frontend-react-js directory in the host machine to the frontend-react-js directory in the container. If changes are made in this directory on the host machine, it reflects on the container directory and subsequently on the application running on the container. This mounting allows for persistent data, so even if the container is stopped or deleted, the data in that directory can still be accessed on the host machine. 
+
+### Container Security Considerations
+- Learnt the importance of container security.
+- Using a managed container service such as aws ecs, eks, e.tc is easier than using unmanaged container services i.e doing it by yourself, this is because the bulk of the work is handled by these cloud services e.g maintaining the server. On the other hand, using unmanaged container services gives you the flexibility to make certain configuration changes that you wont be able to do with cloud services. Using cloud services is like a high level way of doing things so you can focus on what is important and be able to scale properly. Making the decision depends on what your overall goals are and the budget you have for the project. In my opinion, using cloud services is the way to go when it comes to container security because you have so many things to look after and you might miss some vulnerabilities in your infrastructure, deployment and application as a whole, which these cloud servies can identify for you. 
+- Container registry is where container images are stored, could be public e.g docker hub or private. Images can be pushed or pulled in this registry.
+- Most companies have their own private registry where their images are stored, this enables them properly test for security vulnerabilities and loopholes before releasing a version out for the public.
+- You can use Synk, an open source tool to scan your container for vulnerabilities.
+- Docker Compose can only build ONE application. It is hard to carry out auto-scaling with docker compose that is where using managed container services also have an edge.
+
+#### AWS Container Services
+1. AWS ECS
+2. AWS EKS
+3. AWS App Runner
+4. AWS Fargate
+5. AWS Copilot
+
+#### Advanatges of using managed container services
+1. Auto-scaling
+2. Automation
+3. Zero downtime
+4. Easy integration and synchronization with other cloud services
+
+#### Things to consider pertaining container security (Best practices)
+1. Docker and host configuration
+- Keep the host and docker updated to latest security patches.
+- Docker daemon and containers should run in non-root user mode. This will prevent any intruder from having priviledges that will compromise the project.
+2. Securing images
+- Image Vulnerability Scanning e.g AWS Inspector, Clair. This allows you to check your images for vulnerabilities so you can correct them and ensure high security. Your images should ONLY have things that will make the application run effectively. This makes the images lightweight so it can be easily brought up and down depending on your needs. 10MB is a good size. 
+- Trusting a Private vs Public Image Registry. For learning purposes, you can use a public registry. When in a company and you're more security conscious, its best to use a private registry.
+3. Secret Management
+- No sensitive data in docker files or images
+- Use secret management services e.g Hashicorp Vault, AWS Secret Manager to share secrets
+4. Data Security
+- Use Read-Only file system and volume for docker. In the event your files get in the wrong hand, you dont want the perpetrators to be able to make changes that can be detrimental. For example, doing a container escape and since some files are in the container are attached to files in your host system, this can lead to a serious data breach.
+- Use Separate databases for long term storage e,g AWS RDS, DynamoDB. It is recommended to limit long term storage on the docker container itself.
+5. Application security / Monitoring containers / Compliance Framework
+- Use DevSecOps practices while building application security.
+- Ensure all code is tested for vulnerabilities before production use.
+
