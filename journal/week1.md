@@ -63,7 +63,7 @@ The above code mounts the frontend-react-js directory in the host machine to the
 4. AWS Fargate
 5. AWS Copilot
 
-#### Advanatges of using managed container services
+#### Advantages of using managed container services
 1. Auto-scaling
 2. Automation
 3. Zero downtime
@@ -86,3 +86,24 @@ The above code mounts the frontend-react-js directory in the host machine to the
 - Use DevSecOps practices while building application security.
 - Ensure all code is tested for vulnerabilities before production use.
 
+### Containerize Application (Dockerfiles, Docker Compose)
+- Successfully built images for the frontend and backend part of the app.
+- Ran containers for the images and the applications were up and running.
+- A docker compose file was created so the containers would run side by side and they well worked together.
+
+![backend home endpoint](./assets/week-1/week-1-backend-home-endpoint.png)
+
+![frontend react homepage](./assets/week-1/week-1-react-home-page.png)
+
+
+### Write a Flask Backend Endpoint for Notifications
+
+![](./assets/week-1/week-1-backend-notifications-endpoint.png)
+
+### Write a React Page for Notifications
+
+![](./assets/week-1/week-1-notifications-react-page.png)
+
+### Run DynamoDB Local Container and Run Postgres Container
+
+![](./assets/week-1/week-1-successful-running-containers.png)
