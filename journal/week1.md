@@ -107,3 +107,16 @@ The above code mounts the frontend-react-js directory in the host machine to the
 ### Run DynamoDB Local Container and Run Postgres Container
 
 ![](./assets/week-1/week-1-successful-running-containers.png)
+
+
+## Homework Challenges
+- I built my portolio website and made an image out of it.
+- I pushed it to dockerhub
+
+![](./assets/week-1/week-1-docker-hub.png)
+
+- I installed docker on my local machine
+- I ran all the containers on my local system 
+
+![](./assets/week-1/week-1-local-application-running.png)
+![](./assets/week-1/week-1-local-containers.png)
