@@ -120,3 +120,9 @@ The above code mounts the frontend-react-js directory in the host machine to the
 
 ![](./assets/week-1/week-1-local-application-running.png)
 ![](./assets/week-1/week-1-local-containers.png)
+
+### Extra notes from week 2 honeycomb class
+
+- We do npm install on our host system because in the container, the docker file maps together with what is on the host system so when it syncs it needs those dependencies available on the host system to function properly
+
+- In real life best practice is to have different docker files for development and production, this is because in development you want your image too be rich ike ubuntu which already has a lot of things installed in it such as vim , ssh etc to make it easier for you but in production your base image should be almost empty like alpine, you dont want unnecesaary things installed installed in it such as ssh, for security reasons and also for speed because it makes your server more lightweight
