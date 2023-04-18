@@ -26,10 +26,7 @@ export default function SigninPage() {
         window.location.href = "/confirm"
       }
       setErrors(error.message)
-     });
-  } catch (error) {
-
-  }
+    });
   return false
 }
 
