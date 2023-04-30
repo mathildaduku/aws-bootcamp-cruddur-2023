@@ -1,22 +1,61 @@
 from psycopg_pool import ConnectionPool
 import os
-def query_wrap_object(template):
-  sql = f"""
-  (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
-  {template}
-  ) object_row);
-  """
-  return sql
 
-def query_wrap_array(template):
-  sql = f"""
-  (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
-  {template}
-  ) array_row);
-  """
-  return sql
+class Db:
+  def __init__(self):
+    self.init_pool()
 
-def print_sql_err(err):
+  def init_pool():
+    connection_url = os.getenv("CONNECTION_URL")
+    self.pool = ConnectionPool(connection_url)
+  # when we want to commit data such as insert
+
+  def query_commit():
+    try:
+      conn = self.pool.connection() 
+      cur = conn.cursor()
+      cur.execute(sql)
+      conn.commit()
+    except Exception as err:
+      self.print_sql_err(err)
+      #conn.rollback()
+# when we want to return a json object 
+  def query_array_json():
+    print("SQL STATEMENT-[array]-----------")
+    print(sql = "\n")
+    wrapped_sql = self.query_wrap_array(sql)
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql)
+        json  = cur.fetchone()
+        return json[0] 
+# when we want to return an array of json objects
+  def query_object_json(sql):
+    print("SQL STATEMENT-[object]-----------")
+    print(sql = "\n")
+    wrapped_sql = self.query_wrap_object(sql)
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql)
+        json  = cur.fetchone()
+        return json[0] 
+
+  def query_wrap_object(template):
+    sql = f"""
+    (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
+    {template}
+    ) object_row);
+    """
+    return sql
+
+  def query_wrap_array(template):
+    sql = f"""
+    (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
+    {template}
+    ) array_row);
+    """
+    return sql
+  def print_sql_err(err):
     # get details about the exception
     err_type, err_obj, traceback = sys.exc_info()
 
@@ -34,19 +73,4 @@ def print_sql_err(err):
     print ("pgerror:", err.pgerror)
     print ("pgcode:", err.pgcode, "\n")
 
-def query_commit():
-  try:
-    conn = pool.connection() 
-    cur = conn.cursor()
-    cur.execute(sql)
-    conn.commit()
-  except Exception as err:
-    print_sql_err(err)
-    #conn.rollback()
-
-
-class Db:
-  def __init__(self)
-    connection_url = os.getenv("CONNECTION_URL")
-    pool = ConnectionPool(connection_url)
 db = Db()
