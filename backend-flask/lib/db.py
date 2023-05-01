@@ -5,12 +5,12 @@ class Db:
   def __init__(self):
     self.init_pool()
 
-  def init_pool():
+  def init_pool(self):
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
   # when we want to commit data such as insert
 
-  def query_commit():
+  def query_commit(self,sql):
     try:
       conn = self.pool.connection() 
       cur = conn.cursor()
@@ -20,7 +20,7 @@ class Db:
       self.print_sql_err(err)
       #conn.rollback()
 # when we want to return a json object 
-  def query_array_json():
+  def query_array_json(self,sql):
     print("SQL STATEMENT-[array]-----------")
     print(sql = "\n")
     wrapped_sql = self.query_wrap_array(sql)
@@ -30,7 +30,7 @@ class Db:
         json  = cur.fetchone()
         return json[0] 
 # when we want to return an array of json objects
-  def query_object_json(sql):
+  def query_object_json(self,sql):
     print("SQL STATEMENT-[object]-----------")
     print(sql = "\n")
     wrapped_sql = self.query_wrap_object(sql)
@@ -40,7 +40,7 @@ class Db:
         json  = cur.fetchone()
         return json[0] 
 
-  def query_wrap_object(template):
+  def query_wrap_object(self,template):
     sql = f"""
     (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
     {template}
@@ -48,14 +48,14 @@ class Db:
     """
     return sql
 
-  def query_wrap_array(template):
+  def query_wrap_array(self,template):
     sql = f"""
     (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
     {template}
     ) array_row);
     """
     return sql
-  def print_sql_err(err):
+  def print_sql_err(self,err):
     # get details about the exception
     err_type, err_obj, traceback = sys.exc_info()
 
