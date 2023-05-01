@@ -10,12 +10,17 @@ class Db:
     self.pool = ConnectionPool(connection_url)
   # when we want to commit data such as insert
 
+  def query_commit_with_returning_id(self,sql,args):
+    print("SQL STATEMENT-[commit with returning]-----------")
   def query_commit(self,sql):
+    print("SQL STATEMENT-[commit]-----------")
     try:
       conn = self.pool.connection() 
       cur = conn.cursor()
-      cur.execute(sql)
+      cur.execute(sql, "args)
+      returning_id = cur.fetchone()[0]
       conn.commit()
+      return returning_id
     except Exception as err:
       self.print_sql_err(err)
       #conn.rollback()
