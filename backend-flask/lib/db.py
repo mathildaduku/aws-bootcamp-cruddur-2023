@@ -1,5 +1,6 @@
 from psycopg_pool import ConnectionPool
 import os
+import re
 
 class Db:
   def __init__(self):
@@ -10,15 +11,19 @@ class Db:
     self.pool = ConnectionPool(connection_url)
   # when we want to commit data such as insert
 
-  def query_commit_with_returning_id(self,sql,args):
+  def query_commit_id(self,sql,*kwargs):
     print("SQL STATEMENT-[commit with returning]-----------")
   def query_commit(self,sql):
     print("SQL STATEMENT-[commit]-----------")
     try:
       conn = self.pool.connection() 
       cur = conn.cursor()
-      cur.execute(sql, "args)
+      cur.execute(sql, kwargs)
       returning_id = cur.fetchone()[0]
+
+pattern    r"\bRETURNING\b"
+match   re.search(pattern, my_string)
+
       conn.commit()
       return returning_id
     except Exception as err:
