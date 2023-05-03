@@ -26,7 +26,7 @@ class Db:
   def init_pool(self):
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
-  # when we want to commit data such as insert
+  # we want to commit data such as an insert
   # be sure to check for RETURNING in all uppercases
   def print_params(self,params):
     blue = '\033[94m'
@@ -38,26 +38,26 @@ class Db:
   def print_sql(self,title,sql):
     cyan = '\033[96m'
     no_color = '\033[0m'
-    print(f'{cyan} SQL STATEMENT-[{title}]-----------{no_color}')
-    print(sql)    
+    print(f'{cyan} SQL STATEMENT-[{title}]------{no_color}')
+    print(sql)
   def query_commit(self,sql,params={}):
     self.print_sql('commit with returning',sql)
 
     pattern = r"\bRETURNING\b"
-    is_returning_id = re.search(pattern, sql)   
+    is_returning_id = re.search(pattern, sql)
 
     try:
       with self.pool.connection() as conn:
-        cur = conn.cursor()
+        cur =  conn.cursor()
         cur.execute(sql,params)
         if is_returning_id:
           returning_id = cur.fetchone()[0]
-        conn.commit()
+        conn.commit() 
         if is_returning_id:
           return returning_id
     except Exception as err:
       self.print_sql_err(err)
-# when we want to return a json object 
+  # when we want to return a json object
   def query_array_json(self,sql,params={}):
     self.print_sql('array',sql)
 
@@ -65,9 +65,9 @@ class Db:
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
         cur.execute(wrapped_sql,params)
-        json  = cur.fetchone()
-        return json[0] 
-# when we want to return an array of json objects
+        json = cur.fetchone()
+        return json[0]
+  # When we want to return an array of json objects
   def query_object_json(self,sql,params={}):
 
     self.print_sql('json',sql)
@@ -77,11 +77,11 @@ class Db:
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
         cur.execute(wrapped_sql,params)
-        json  = cur.fetchone()
+        json = cur.fetchone()
         if json == None:
           "{}"
         else:
-          return json[0]           
+          return json[0]
   def query_wrap_object(self,template):
     sql = f"""
     (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
