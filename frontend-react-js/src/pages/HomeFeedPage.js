@@ -17,7 +17,7 @@ export default function HomeFeedPage() {
   const [popped, setPopped] = React.useState(false);
   const [poppedReply, setPoppedReply] = React.useState(false);
   const [replyActivity, setReplyActivity] = React.useState({});
-  const [user, setUser] = React.useState(null);  
+  const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
 
   const loadData = async () => {
@@ -58,7 +58,7 @@ export default function HomeFeedPage() {
     })
     .catch((err) => console.log(err));
   };
-
+  
   React.useEffect(()=>{
     //prevents double call
     if (dataFetchedRef.current) return;
@@ -72,10 +72,11 @@ export default function HomeFeedPage() {
     <article>
       <DesktopNavigation user={user} active={'home'} setPopped={setPopped} />
       <div className='content'>
-        <ActivityForm  
+        <ActivityForm
+          user_handle={user}
           popped={popped}
-          setPopped={setPopped} 
-          setActivities={setActivities} 
+          setPopped={setPopped}
+          setActivities={setActivities}
         />
         <ReplyForm 
           activity={replyActivity} 
