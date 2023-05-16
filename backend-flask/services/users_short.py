@@ -1,4 +1,9 @@
-@app.route("/api/users/@<string:handle>/short", methods=['GET'])
-def data_users_short(handle):
-  data = UsersShort.run(handle)
-  return data, 200
+from lib.db import db
+
+class UsersShort:
+  def run(handle):
+    sql = db.template('users','short')
+    results = db.query_object_json(sql,{
+      'handle': handle
+    })
+    return results
