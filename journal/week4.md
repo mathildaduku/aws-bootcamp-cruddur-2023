@@ -186,3 +186,5 @@ aws ec2 modify-security-group-rules \
 - Implemented create activities endpoint
 
 - Created a crud with the logged in user
+
+![](./assets/week-4/week-4-create-crud.png)
