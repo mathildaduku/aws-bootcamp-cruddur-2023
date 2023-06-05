@@ -15,7 +15,7 @@ export default function MessageGroupItem(props) {
   }
 
   return (
-    <Link className={classes()} to={`/messages/@`+props.message_group.uuid}>
+    <Link className={classes()} to={`/messages/`+props.message_group.uuid}>
       <div className='message_group_avatar'></div>
       <div className='message_content'>
         <div classsName='message_group_meta'>
@@ -25,7 +25,7 @@ export default function MessageGroupItem(props) {
           </div>{/* activity_identity */}
         </div>{/* message_meta */}
         <div className="message">{props.message_group.message}</div>
-          <div className="created_at" title={format_datetime(props.message_group.created_at)}>
+        <div className="created_at" title={format_datetime(props.message_group.created_at)}>
           <span className='ago'>{message_time_ago(props.message_group.created_at)}</span> 
         </div>{/* created_at */}
       </div>{/* message_content */}
