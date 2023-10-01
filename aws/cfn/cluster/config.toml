@@ -1,0 +1,8 @@
+[deploy]
+bucket = 'cfn-artifacts-5-29'
+region = 'us-east-1'
+stack_name = 'CrdSrvBackendFlask'
+
+[parameters]
+CertificateArn = 'arn:aws:acm:us-east-1:720065745710:certificate/5ab9db2f-0594-4ee9-95ea-92d9dc06cb8a'
+NetworkingStack = 'CrdNet'
