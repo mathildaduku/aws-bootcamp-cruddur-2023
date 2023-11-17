@@ -99,12 +99,11 @@ Resources:
       DesiredCount: 1
       EnableECSManagedTags: true
       EnableExecuteCommand: true
-      HealthCheckGracePeriodSeconds: 100
+      HealthCheckGracePeriodSeconds: 0
       LaunchType: FARGATE
       LoadBalancers:
-        - TargetGroupArn:
-            Fn::ImportValue:
-              !Sub "${ClusterStack}BackendTGArn"
+      # TODO - UPDATE THIS
+        - TargetGroupArn: 'arn:aws:elasticloadbalancing:us-east-1:720065745710:targetgroup/cruddur-backend-flask-tg/de149c80b8958e34'
           ContainerName: 'backend-flask'
           ContainerPort: !Ref ContainerPort
       NetworkConfiguration:
@@ -119,21 +118,11 @@ Resources:
                   !Sub "${NetworkingStack}PublicSubnetIds"
       PlatformVersion: LATEST
       PropagateTags: SERVICE
-      ServiceConnectConfiguration:
-        Enabled: true
-        Namespace: "cruddur"
-        # TODO - If you want to log
-        # LogConfiguration
-        Services:
-          - DiscoveryName: backend-flask
-            PortName: backend-flask
-            ClientAliases:
-              - Port: !Ref ContainerPort
-      #ServiceRegistries:
-      #  - RegistryArn: !Sub 'arn:aws:servicediscovery:${AWS::Region}:${AWS::AccountId}:service/srv-cruddur-backend-flask'
-      #    Port: !Ref ContainerPort
-      #    ContainerName: 'backend-flask'
-      #    ContainerPort: !Ref ContainerPort
+      ServiceRegistries:
+        - RegistryArn: !Sub 'arn:aws:servicediscovery:${AWS::Region}:${AWS::AccountId}:service/srv-cruddur-backend-flask'
+          Port: !Ref ContainerPort
+          ContainerName: 'backend-flask'
+          ContainerPort: !Ref ContainerPort
       ServiceName: !Ref ServiceName
       TaskDefinition: !Ref TaskDefinition
 
@@ -269,3 +258,8 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
         - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+Outputs:
+  ServiceSecurityGroupId:
+    Value: !GetAtt ServiceSG.GroupId
+    Export: 
+      Name: !Sub "${AWS::StackName}ServiceSecurityGroupId"
