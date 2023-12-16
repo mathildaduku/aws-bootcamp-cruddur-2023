@@ -16,7 +16,7 @@ Parameters:
     Default: CrdCluster
   ContainerPort:
     Type: Number
-    Default: 4567
+    Default: '4567'
   ServiceCpu:
     Type: String
     Default: '256'
