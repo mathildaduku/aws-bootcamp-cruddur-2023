@@ -47,6 +47,7 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
   xray-daemon:
+    hostname: xray-daemon
     image: "amazon/aws-xray-daemon"
     environment:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
@@ -57,7 +58,7 @@ services:
     ports:
       - 2000:2000/udp
     networks:
-      - cruddur-net      
+      - cruddur-net
 # the name flag is a hack to change the default prepend folder
 # name when outputting the image names
 networks: 
